@@ -24,7 +24,8 @@ const productReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default combineReducers({
-  productState: productReducer,
-});
+const rootReducer = combineReducers({
+    productState: productReducer,
+  });
+  
+  export default rootReducer;
