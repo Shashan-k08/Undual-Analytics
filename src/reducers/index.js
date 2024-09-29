@@ -13,7 +13,7 @@ const productReducer = (state = initialState, action) => {
     case "FETCH_CATEGORIES":
       return { ...state, categories: action.payload };
     case "FETCH_PRODUCTS":
-      return { ...state, products: [...state.products, ...action.payload] };
+      return { ...state, products: [...state.products, ...action.payload] }; // Update this logic if you want to replace instead of appending
     case "SET_CATEGORY":
       return { ...state, selectedCategory: action.payload, products: [] }; // Clear products when category changes
     case "SET_SEARCH":
@@ -24,8 +24,9 @@ const productReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 const rootReducer = combineReducers({
-    productState: productReducer,
-  });
-  
-  export default rootReducer;
+  productState: productReducer,
+});
+
+export default rootReducer;
