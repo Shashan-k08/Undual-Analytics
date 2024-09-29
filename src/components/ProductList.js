@@ -17,6 +17,7 @@ const ProductList = () => {
       try {
         dispatch({ type: 'LOADING', payload: true });
 
+        // Construct query based on selected category and pagination
         let query = `?limit=${limit}&skip=${skip}`;
         if (selectedCategory) {
           query += `&category=${selectedCategory}`;
@@ -24,14 +25,17 @@ const ProductList = () => {
 
         const response = await fetch(`https://dummyjson.com/products${query}`);
         
-        // Check if the response is ok before parsing
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
 
         const data = await response.json();
-        
-        dispatch({ type: 'FETCH_PRODUCTS', payload: data.products });
+
+        // If skip is 0, reset products, otherwise append for infinite scroll
+        dispatch({ 
+          type: 'FETCH_PRODUCTS', 
+          payload: skip === 0 ? data.products : [...products, ...data.products] 
+        });
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -40,8 +44,9 @@ const ProductList = () => {
     };
 
     fetchProducts();
-  }, [dispatch, selectedCategory, skip]);
+  }, [dispatch, selectedCategory, skip]); // Trigger when category or skip changes
 
+  // Infinite scroll observer
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !loading) {
@@ -83,7 +88,6 @@ const ProductList = () => {
       </div>
       {loading && <p>Loading...</p>}
       <div ref={loaderRef} style={{ height: '20px', margin: '10px 0' }} />
-      
     </div>
   );
 };
