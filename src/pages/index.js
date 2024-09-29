@@ -23,15 +23,19 @@ const MainPage = () => {
   };
 
   return (
-    <div>
-      <h1>Product Management</h1>
+    <div className='main-box'>
+      <p className='page-heading'>Undual Analytics</p>
+      <div className='category-box'>
       <CategorySelector />
       <input
         type="text"
         placeholder="Search products..."
         onChange={handleSearchChange}
       />
+      </div>
+      <div className='list-box'>
       <ProductList />
+      </div>
     </div>
   );
 };
